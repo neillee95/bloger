@@ -1,0 +1,18 @@
+version: "3.1"
+services:
+  bloger-db:
+    image: mongo
+    ports:
+      - "27017:27017"
+    container_name: bloger-db
+    volumes:
+      - /data/mongo:/data/db
+    networks:
+      - bloger
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: bloger
+      MONGO_INITDB_ROOT_PASSWORD: bloger
+      MONGO_INITDB_DATABASE: bloger
+
+networks:
+  bloger:

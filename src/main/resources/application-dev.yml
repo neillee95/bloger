@@ -1,0 +1,14 @@
+server:
+  port: 9000
+
+spring:
+  data:
+    mongodb:
+      host: 127.0.0.1
+      username: bloger
+      password: bloger
+      authentication-database: admin
+      database: bloger
+
+jwt:
+  secret: yourcustomjwtsecretkey
