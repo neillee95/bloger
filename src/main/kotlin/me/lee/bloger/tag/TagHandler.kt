@@ -5,6 +5,7 @@ import me.lee.bloger.article.Article
 import me.lee.bloger.extension.jsonBody
 import me.lee.bloger.http.Response
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
+import org.springframework.data.mongodb.core.aggregation.Aggregation.*
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
 import org.springframework.stereotype.Component
@@ -15,13 +16,16 @@ import org.springframework.web.reactive.function.server.ServerResponse.ok
 @Component
 class TagHandler(private val mongoTemplate: ReactiveMongoTemplate) {
 
-    suspend fun getTags(serverRequest: ServerRequest): ServerResponse =
-            mongoTemplate.findDistinct("tags", Article::class.java, String::class.java)
-                    .collectList()
-                    .flatMap {
-                        ok().jsonBody(Response.success(it))
-                    }
-                    .awaitFirst()
+    suspend fun getTags(serverRequest: ServerRequest): ServerResponse {
+        val aggregation = newAggregation(Article::class.java,
+                unwind("tags"),
+                group("tags")
+                        .count().`as`("count"))
+        return mongoTemplate.aggregate(aggregation, Map::class.java)
+                .collectList()
+                .flatMap { ok().jsonBody(Response.success(it)) }
+                .awaitFirst()
+    }
 
     suspend fun getArticlesByTag(serverRequest: ServerRequest): ServerResponse {
         val query = Query()
