@@ -4,43 +4,43 @@ import kotlinx.coroutines.reactive.awaitFirst
 import me.lee.bloger.article.Article
 import me.lee.bloger.extension.jsonBody
 import me.lee.bloger.http.Response
+import org.bson.Document
 import org.springframework.data.domain.Sort
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
-import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.mongodb.core.aggregation.Aggregation.*
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.ServerResponse.ok
-import java.text.SimpleDateFormat
-import java.util.*
 
 @Component
 class ArchiveHandler(private val mongoTemplate: ReactiveMongoTemplate) {
 
+    /**
+     * Get archives with aggregation.
+     */
     suspend fun getArchives(serverRequest: ServerRequest): ServerResponse {
-        val dateFormat = SimpleDateFormat("yyyy/MM")
-
         val skip = serverRequest.queryParam("skip").orElse("0").toLong()
-        val size = serverRequest.queryParam("size").orElse("5").toInt()
+        val size = serverRequest.queryParam("size").orElse("5").toLong()
 
-        val query = Query()
-                .with(Sort.by(Sort.Direction.DESC, "createTime"))
-                .skip(skip)
-        query.fields()
-                .include("title")
-                .include("createTime")
+        val aggregation = newAggregation(Article::class.java,
+                skip(skip),
+                sort(Sort.Direction.DESC, "createTime"),
+                project("title", "createTime")
+                        .andExpression("toDate(toLong(createTime))")
+                        .`as`("timePoint"),
+                project("title", "createTime")
+                        .and("timePoint")
+                        .dateAsFormattedString("%Y/%m")
+                        .`as`("timePoint"),
+                group("timePoint")
+                        .count().`as`("count")
+                        .push(Document.parse("{id:'\$_id', title:'\$title', createTime:'\$createTime'}"))
+                        .`as`("articles"),
+                limit(size)
+        )
 
-        return mongoTemplate.find(query, Map::class.java, mongoTemplate.getCollectionName(Article::class.java))
-                .filter { Objects.nonNull(it["createTime"]) }
-                .map {
-                    val mutableMap = it.toMutableMap()
-                    mutableMap["mappedTime"] = dateFormat.format(it["createTime"])
-                    mutableMap
-                }
-                .groupBy { it["mappedTime"] }
-                .flatMap { it.collectList() }
-                .limitRate(size)
-                .map { Archive(it[0]["mappedTime"] as String, it) }
+        return mongoTemplate.aggregate(aggregation, Map::class.java)
                 .collectList()
                 .flatMap { ok().jsonBody(Response.success(it)) }
                 .awaitFirst()
