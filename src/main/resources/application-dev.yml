@@ -10,5 +10,9 @@ spring:
       authentication-database: admin
       database: bloger
 
+logging:
+  level:
+    root: debug
+
 jwt:
   secret: yourcustomjwtsecretkey
