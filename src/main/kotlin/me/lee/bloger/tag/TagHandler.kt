@@ -18,6 +18,7 @@ class TagHandler(private val mongoTemplate: ReactiveMongoTemplate) {
 
     suspend fun getTags(serverRequest: ServerRequest): ServerResponse {
         val aggregation = newAggregation(Article::class.java,
+                match(Criteria.where("publish").`is`(true)),
                 unwind("tags"),
                 group("tags")
                         .count().`as`("count"))
@@ -28,8 +29,10 @@ class TagHandler(private val mongoTemplate: ReactiveMongoTemplate) {
     }
 
     suspend fun getArticlesByTag(serverRequest: ServerRequest): ServerResponse {
-        val query = Query()
-                .addCriteria(Criteria.where("tags").`in`(serverRequest.pathVariable("name")))
+        val criteria =
+                Criteria.where("publish").`is`(true)
+                        .and("tags").`in`(serverRequest.pathVariable("name"))
+        val query = Query(criteria)
         query.fields()
                 .include("title")
         return mongoTemplate.find(query, Map::class.java, mongoTemplate.getCollectionName(Article::class.java))

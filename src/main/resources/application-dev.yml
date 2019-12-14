@@ -12,7 +12,7 @@ spring:
 
 logging:
   level:
-    root: debug
+    me.lee.bloger: debug
 
 jwt:
   secret: yourcustomjwtsecretkey

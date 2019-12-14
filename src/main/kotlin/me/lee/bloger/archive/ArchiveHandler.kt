@@ -8,6 +8,7 @@ import org.bson.Document
 import org.springframework.data.domain.Sort
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
 import org.springframework.data.mongodb.core.aggregation.Aggregation.*
+import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
@@ -24,6 +25,7 @@ class ArchiveHandler(private val mongoTemplate: ReactiveMongoTemplate) {
         val size = serverRequest.queryParam("size").orElse("5").toLong()
 
         val aggregation = newAggregation(Article::class.java,
+                match(Criteria.where("publish").`is`(true)),
                 skip(skip),
                 sort(Sort.Direction.DESC, "createTime"),
                 project("title", "createTime")

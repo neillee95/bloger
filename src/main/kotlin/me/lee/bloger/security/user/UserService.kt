@@ -4,6 +4,7 @@ import org.bson.types.ObjectId
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
+import java.util.*
 
 @Component
 class UserService(private val userRepository: UserRepository,
@@ -23,8 +24,7 @@ class UserService(private val userRepository: UserRepository,
      * Generate new user
      */
     fun generateUser(): User {
-//        val password = UUID.randomUUID().toString().replace("-", "").toLowerCase()
-        val password = "admin"
+        val password = UUID.randomUUID().toString().replace("-", "").toLowerCase()
         val id = ObjectId().toHexString()
         val user = User(id, "admin", passwordEncoder.encode(password))
         println("\n\nInitial user: [ username: admin, password: $password ]\n\n")
