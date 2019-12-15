@@ -24,16 +24,15 @@ class ArticleHandler(private val mongoTemplate: ReactiveMongoTemplate,
     suspend fun getArticles(request: ServerRequest): ServerResponse {
         val pagination = request.pageParam(defaultSize = 20)
 
-        val aggregation = newAggregation(Article::class.java,
-                match(Criteria.where("publish").`is`(true)),
-                skip((pagination.page - 1) * pagination.size),
-                project("id", "title", "cover", "createTime")
-                        .and("content").substring(0, 240),
-                limit(pagination.size),
-                sort(Sort.Direction.DESC, "createTime")
-        )
-
         val aggregationMono = Mono.defer {
+            val aggregation = newAggregation(Article::class.java,
+                    match(Criteria.where("publish").`is`(true)),
+                    skip((pagination.page - 1) * pagination.size),
+                    project("id", "title", "cover", "createTime")
+                            .and("content").substring(0, 240),
+                    limit(pagination.size),
+                    sort(Sort.Direction.DESC, "createTime")
+            )
             mongoTemplate.aggregate(aggregation, Map::class.java)
                     .collectList()
         }
@@ -44,7 +43,7 @@ class ArticleHandler(private val mongoTemplate: ReactiveMongoTemplate,
 
         return Mono.zip(aggregationMono, countMono)
                 .flatMap {
-                    val pageResult = PageResult(pagination.page, it.t2, it.t1)
+                    val pageResult = PageResult(pagination.page.toInt(), it.t2, it.t1)
                     ok().jsonBody(Response.success(pageResult))
                 }
                 .awaitFirst()

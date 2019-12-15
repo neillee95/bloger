@@ -15,6 +15,7 @@ class MessageRouterConfig {
                 POST("/message",
                         RequestPredicates.contentType(MediaType.APPLICATION_JSON),
                         messageHandler::leaveMessage)
+                GET("/messages", messageHandler::getLeaveMessages)
             }
 
 }

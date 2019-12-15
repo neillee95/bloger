@@ -7,20 +7,6 @@ import java.io.Serializable
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 
-/**
- * 文章
- * id                  文章id
- * title               文章标题
- * content             文章内容
- * cover               封面图
- * tags                标签
- * type                类型
- * canComment          是否可以评论
- * publish             是否发表
- * viewCount           查看次数
- * createTime          创建时间
- * lastModifiedTime    最近修改时间
- */
 @Document("articles")
 data class Article(@MongoId(FieldType.STRING) var id: String,
                    @field:NotEmpty val title: String,
