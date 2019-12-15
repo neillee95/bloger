@@ -7,8 +7,8 @@ import reactor.core.publisher.Mono
 import java.util.*
 
 @Component
-class UserService(private val userRepository: UserRepository,
-                  private val passwordEncoder: PasswordEncoder) {
+class UserInitializeService(private val userRepository: UserRepository,
+                            private val passwordEncoder: PasswordEncoder) {
 
     fun userCount() = userRepository.count()
 
