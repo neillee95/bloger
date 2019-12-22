@@ -5,6 +5,7 @@ plugins {
     id("io.spring.dependency-management") version "1.0.8.RELEASE"
     kotlin("jvm") version "1.3.50"
     kotlin("plugin.spring") version "1.3.50"
+    id("com.google.cloud.tools.jib") version "1.8.0"
 }
 
 group = "me.lee"
@@ -42,5 +43,23 @@ tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "1.8"
+    }
+}
+
+jib {
+    from {
+        image = "openjdk:8-jdk-alpine"
+    }
+    to {
+        image = "dearlee/bloger-backend"
+        credHelper = "pass"
+        tags = setOf("latest")
+    }
+    container {
+        jvmFlags = listOf("-Xms512m")
+        mainClass = "me.lee.bloger.BlogerApplicationKt"
+        creationTime = "USE_CURRENT_TIMESTAMP"
+        args = listOf("--spring.profiles.active=compose")
+        ports = listOf("9000")
     }
 }

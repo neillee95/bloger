@@ -1,3 +1,18 @@
+server:
+  port: 9000
+
 spring:
-  profiles:
-    active: dev
+  data:
+    mongodb:
+      host: 127.0.0.1
+      username: bloger
+      password: bloger
+      database: bloger
+      authentication-database: admin
+
+logging:
+  level:
+    me.lee.bloger: debug
+
+jwt:
+  secret: yourcustomjwtsecretkey

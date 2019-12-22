@@ -4,7 +4,7 @@ server:
 spring:
   data:
     mongodb:
-      host: 127.0.0.1
+      host: bloger-mongo
       username: bloger
       password: bloger
       authentication-database: admin
@@ -12,7 +12,7 @@ spring:
 
 logging:
   level:
-    me.lee.bloger: debug
+    me.lee.bloger: warn
 
 jwt:
   secret: yourcustomjwtsecretkey

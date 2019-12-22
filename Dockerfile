@@ -1,4 +1,6 @@
 FROM openjdk:8-jdk-alpine
-COPY src/main/resources/application-dev.yml /application.yml
-COPY build/libs/*.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar", "--spring.config.name=/application.yml"]
+VOLUME /tmp
+COPY build/dependency/BOOT-INF/lib /app/lib
+COPY build/dependency/META-INF /app/META-INF
+COPY build/dependency/BOOT-INF/classes /app
+ENTRYPOINT ["java","-cp","app:app/lib/*","me.lee.bloger.BlogerApplicationKt","--spring.profiles.active=compose"]

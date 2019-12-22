@@ -1,2 +1,2 @@
-build
-!build/libs/*.jar
+*
+!build/dependency
