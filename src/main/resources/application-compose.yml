@@ -9,10 +9,17 @@ spring:
       password: bloger
       authentication-database: admin
       database: bloger
+  main:
+    banner-mode: off
 
 logging:
   level:
     me.lee.bloger: warn
+  file:
+    path: logs
+    name: bloger.log
+  pattern:
+    console: "%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"
 
 jwt:
   secret: yourcustomjwtsecretkey
