@@ -1,0 +1,39 @@
+{
+  "properties": [
+    {
+      "name": "jwt.secret",
+      "type": "java.lang.String",
+      "description": "Jwt secret."
+    },
+    {
+      "name": "jwt.expire-days",
+      "type": "java.lang.String",
+      "description": "Jwt expire days."
+    },
+    {
+      "name": "cors.credentials",
+      "type": "java.lang.String",
+      "description": "Cors credentials."
+    },
+    {
+      "name": "cors.headers",
+      "type": "java.lang.String",
+      "description": "Cors headers."
+    },
+    {
+      "name": "cors.origins",
+      "type": "java.lang.String",
+      "description": "Cors origins."
+    },
+    {
+      "name": "cors.methods",
+      "type": "java.lang.String",
+      "description": "Cors methods."
+    },
+    {
+      "name": "cors.age",
+      "type": "java.lang.String",
+      "description": "Cors age."
+    }
+  ]
+}
