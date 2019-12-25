@@ -7,6 +7,6 @@ import reactor.core.publisher.Mono
 @Repository
 interface ArticleRepository : ReactiveMongoRepository<Article, String> {
 
-    fun countByPublishIs(publish: Boolean): Mono<Long>
+    fun countByPublishIsTrue(): Mono<Long>
 
 }
