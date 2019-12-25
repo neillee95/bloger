@@ -5,6 +5,7 @@ build/
 !**/src/main/**
 !**/src/test/**
 .ignore/**
+*.sh
 
 ### STS ###
 .apt_generated
