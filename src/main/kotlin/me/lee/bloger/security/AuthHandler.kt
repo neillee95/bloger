@@ -29,9 +29,7 @@ class AuthHandler(private val validator: Validator,
                 .flatMap { form ->
                     val authenticationToken = UsernamePasswordAuthenticationToken(form.username, form.password)
                     authenticationManager.authenticate(authenticationToken)
-                            .flatMap {
-                                response(it.principal as SecurityUser)
-                            }
+                            .flatMap { response(it.principal as SecurityUser) }
                             .switchIfEmpty(ok().jsonBody(Response.fail()))
                             .onErrorResume { ok().jsonBody(Response.fail())}
                 }
@@ -46,6 +44,7 @@ class AuthHandler(private val validator: Validator,
         val authTokenCookie = ResponseCookie
                 .from(AUTH_TOKEN_COOKIE, Jwt.Signer.sign(jwtProperties.secret, claims, jwtProperties.expireDays))
                 .maxAge(Duration.ofDays(jwtProperties.expireDays))
+                .path("/")
                 .build()
         return ok().contentType(MediaType.APPLICATION_JSON)
                 .cookie(authTokenCookie)

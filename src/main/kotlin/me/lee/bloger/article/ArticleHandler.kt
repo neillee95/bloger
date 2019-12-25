@@ -38,7 +38,7 @@ class ArticleHandler(private val mongoTemplate: ReactiveMongoTemplate,
         }
 
         val countMono = Mono.defer {
-            articleRepository.countByPublishIs(true)
+            articleRepository.countByPublishIsTrue()
         }
 
         return Mono.zip(aggregationMono, countMono)
