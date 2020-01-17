@@ -29,8 +29,7 @@ class TagHandler(private val mongoTemplate: ReactiveMongoTemplate) {
     }
 
     suspend fun getArticlesByTag(serverRequest: ServerRequest): ServerResponse {
-        val criteria =
-                Criteria.where("publish").`is`(true)
+        val criteria = Criteria.where("publish").`is`(true)
                         .and("tags").`in`(serverRequest.pathVariable("name"))
         val query = Query(criteria)
         query.fields()

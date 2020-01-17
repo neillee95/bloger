@@ -1,7 +1,7 @@
 version: "3.1"
 services:
   bloger-db:
-    image: mongo
+    image: mongo:4.0
     ports:
       - "27017:27017"
     container_name: bloger-db

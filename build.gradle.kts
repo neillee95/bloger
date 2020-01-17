@@ -57,7 +57,7 @@ jib {
         tags = setOf("latest")
     }
     container {
-        jvmFlags = listOf("-Xms512m")
+//        jvmFlags = listOf("-Xms512m")
         mainClass = "me.lee.bloger.BlogerApplicationKt"
         creationTime = "USE_CURRENT_TIMESTAMP"
         args = listOf("--spring.profiles.active=compose")

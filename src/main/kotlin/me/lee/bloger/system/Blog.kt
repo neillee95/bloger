@@ -10,4 +10,5 @@ import javax.validation.constraints.NotNull
 data class Blog(@Id var id: String? = null,
                 @field:NotBlank val name: String,
                 val footer: String,
-                @field:NotNull val leaveMessage: Boolean) : Serializable
+                @field:NotNull val leaveMessage: Boolean,
+                val social: List<String> = listOf()) : Serializable
