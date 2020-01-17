@@ -2,7 +2,7 @@ package me.lee.bloger.metrics
 
 import java.io.Serializable
 
-data class Metrics(val messages: Long,
+data class Metrics(val visitors: Long,
+                   val messages: Long,
                    val articles: Long,
-                   val commits: Long,
-                   val visitors: Long) : Serializable
+                   val comments: Long) : Serializable
