@@ -76,6 +76,16 @@ sudo docker push IMAGE
 
 不建议使用 `java` 命令直接启动, 如果是这样, 你需要重新构建前端或者通过代理服务器比如 Nginx 转发请求.
 
+系统会在第一次启动后创建账户, 用户名和密码会打印在日志中, 输出的格式类似于
+```
+Initial user: [ username: USERNAME, password: PASSWORD ]
+```
+通过 docker 查看,
+```bash
+docker log bloger-backend
+```
+第一次启动后请尽快到首页下方进入管理后台更改密码和初始化系统.
+
 ## 🌟 示例
 [Lee's Blog](https://blog.virtualfab.top)
 
