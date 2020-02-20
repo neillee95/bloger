@@ -1,0 +1,34 @@
+version: "3.5"
+
+services:
+  bloger-mongo:
+    image: mongo:4.0
+    container_name: bloger-mongo
+    volumes:
+      - "/data/bloger:/data/db"
+    networks:
+      - bloger
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: bloger
+      MONGO_INITDB_ROOT_PASSWORD: bloger
+      MONGO_INITDB_DATABASE: bloger
+
+  bloger-backend:
+    image: dearlee/bloger-backend
+    container_name: bloger-backend
+    volumes:
+      - "./application-compose.yml:/app/resources/application-compose.yml"
+    networks:
+      - bloger
+
+  bloger-frontend:
+    image: dearlee/bloger-frontend
+    container_name: bloger-frontend
+    ports:
+      - "5000:80"
+    networks:
+      - bloger
+
+networks:
+  bloger:
+    name: bloger
