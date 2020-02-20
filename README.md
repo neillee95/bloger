@@ -48,7 +48,7 @@ Jib Gradle 插件.\
 ```
 要注意一点, 通过 `gradle jib` 构建镜像时并不会生成本地镜像, 而是生成 image layer, 这些 layer 在 build/jib-cache中, 
 如果要构建本地镜像, 请使用 `gradle jibDockerBuild`. 另外还有一点, 
-push 使用的认证方法是使用 [Docker Credential Helpers](https://github.com/docker/docker-credential-helpers), push 前请先配置 Docker Credential Helpers,
+push 使用的认证方法是 [Docker Credential Helpers](https://github.com/docker/docker-credential-helpers), push 前请先配置 Docker Credential Helpers,
 或者修改 [build.gradle.kts](./build.gradle.kts) 认证方式为 auth, 
 ```kotlin
 jib {
