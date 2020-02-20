@@ -1,23 +1,25 @@
 <p style="text-align: center">
   <img width="128px" height="128px" src="https://virtualfab.top/bloger/logo.png" alt="">
 </p>
+
 <h1 style="text-align: center">Bloger</h1>
+
 <p style="text-align: center">
   一个新的现代化博客系统.
 </p>
 
-##描述
+## 🌟 描述
 Bloger 是一个前后端分离的博客系统, 这是博客系统的后端, 前端 [在这里](https://github.com/neillee95/bloger-ui). 
 后端使用 Kotlin 开发, 并结合了 Spring Boot, Spring WebFlux, Spring Security, Kotlin Coroutines等, 使用 MongoDB 持久化数据. 
 它不仅仅是一个博客系统, 也是一个 Kotlin + Spring WebFlux + Kotlin Coroutines 的示例程序. 更多 Spring 对 Kotlin 的支持, 
 可以[看这里](https://docs.spring.io/spring/docs/current/spring-framework-reference/languages.html).
 
-##特性
+## 🌟 特性
 - 快速开发, 可以通过 Docker Compose 和 Google Jib 快速部署
 - 简单使用, UI美观
 - 更多先进的语言特性, Kotlin & Coroutines, Spring WebFlux 等
 
-##使用
+## 🌟 使用
 推荐使用 Docker Compose 部署, [deploy](./deploy) 中包含所需的 compose 文件, 另外为了保证安全性, 
 在启动前先修改 [application-compose.yml](./deploy/application-compose.yml) 中的 secret,
 ```yaml
@@ -74,8 +76,8 @@ sudo docker push IMAGE
 
 不建议使用 `java` 命令直接启动, 如果是这样, 你需要重新构建前端或者通过代理服务器比如 Nginx 转发请求.
 
-##示例
+## 🌟 示例
 [Lee's Blog](https://blog.virtualfab.top)
 
-##开源协议
+## 🌟 开源协议
 MIT
