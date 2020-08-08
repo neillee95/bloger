@@ -18,8 +18,8 @@ class SetupMigration {
         val password = UUID.randomUUID().toString().replace("-", "").toLowerCase()
         val id = ObjectId().toHexString()
         val user = User(id, "admin", passwordEncoder.encode(password))
-        println("\n\nInitial user: [ username: admin, password: $password ]\n\n")
         mongoTemplate.save(user)
+        println("\n\nInitial user: [ username: admin, password: $password ]\n\n")
     }
 
     @ChangeSet(id = "init-blog", author = "neillee95", order = "002")

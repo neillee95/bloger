@@ -8,6 +8,7 @@ import me.lee.bloger.http.Response
 import org.springframework.data.domain.Sort
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
 import org.springframework.data.mongodb.core.aggregation.Aggregation.*
+import org.springframework.data.mongodb.core.aggregation.StringOperators.valueOf
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.ServerRequest
@@ -29,7 +30,7 @@ class ArticleHandler(private val mongoTemplate: ReactiveMongoTemplate,
                     match(Criteria.where("publish").`is`(true)),
                     skip((pagination.page - 1) * pagination.size),
                     project("id", "title", "cover", "createTime")
-                            .and("content").substring(0, 240),
+                            .and(valueOf("content").substringCP(0, 240)).`as`("content"),
                     limit(pagination.size),
                     sort(Sort.Direction.DESC, "createTime")
             )
