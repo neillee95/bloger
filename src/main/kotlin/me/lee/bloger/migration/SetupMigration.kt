@@ -4,6 +4,7 @@ import com.github.mongobee.changeset.ChangeLog
 import com.github.mongobee.changeset.ChangeSet
 import me.lee.bloger.security.user.User
 import me.lee.bloger.system.Blog
+import me.lee.bloger.utils.Hashing
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -17,9 +18,9 @@ class SetupMigration {
         val passwordEncoder = BCryptPasswordEncoder()
         val password = UUID.randomUUID().toString().replace("-", "").toLowerCase()
         val id = ObjectId().toHexString()
-        val user = User(id, "admin", passwordEncoder.encode(password))
+        val user = User(id, "admin", passwordEncoder.encode(Hashing.sha256().hashString(password)))
         mongoTemplate.save(user)
-        println("\n\nInitial user: [ username: admin, password: $password ]\n\n")
+        println("\n\nInitial user: [ username: admin, password: $password ], please change your password firstly!!!\n\n")
     }
 
     @ChangeSet(id = "init-blog", author = "neillee95", order = "002")

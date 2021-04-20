@@ -14,7 +14,7 @@ class PasswordService(private val userRepository: UserRepository,
 
     suspend fun updatePassword(passwordForm: PasswordForm): HttpResponse {
         if (passwordForm.newPassword != passwordForm.confirmPassword) {
-            return Response.success()
+            return Response.fail()
         }
         return userRepository.findAll()
                 .switchIfEmpty(Mono.error(RuntimeException()))
