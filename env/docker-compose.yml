@@ -6,7 +6,7 @@ services:
       - "27017:27017"
     container_name: bloger-db
     volumes:
-      - /data/mongo:/data/db
+      - /data/bloger-dev:/data/db
     networks:
       - bloger
     environment:

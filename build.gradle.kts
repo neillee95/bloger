@@ -47,6 +47,10 @@ tasks.withType<KotlinCompile> {
     }
 }
 
+springBoot {
+    mainClassName = "me.lee.bloger.BlogerApplicationKt"
+}
+
 jib {
     from {
         image = "openjdk:8-jdk-alpine"

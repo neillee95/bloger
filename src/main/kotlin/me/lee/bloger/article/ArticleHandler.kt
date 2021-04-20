@@ -30,7 +30,7 @@ class ArticleHandler(private val mongoTemplate: ReactiveMongoTemplate,
                     match(Criteria.where("publish").`is`(true)),
                     skip((pagination.page - 1) * pagination.size),
                     project("id", "title", "cover", "createTime")
-                            .and(valueOf("content").substringCP(0, 240)).`as`("content"),
+                            .and(valueOf("content").substringCP(0, 120)).`as`("content"),
                     limit(pagination.size),
                     sort(Sort.Direction.DESC, "createTime")
             )
