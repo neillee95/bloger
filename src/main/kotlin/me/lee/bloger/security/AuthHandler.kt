@@ -19,22 +19,24 @@ import java.time.Duration
 import javax.validation.Validator
 
 @Component
-class AuthHandler(private val validator: Validator,
-                  private val jwtProperties: JwtProperties,
-                  private val authenticationManager: ReactiveAuthenticationManager) {
+class AuthHandler(
+    private val validator: Validator,
+    private val jwtProperties: JwtProperties,
+    private val authenticationManager: ReactiveAuthenticationManager
+) {
 
     suspend fun auth(request: ServerRequest): ServerResponse {
         return request.bodyToMono(UserForm::class.java)
-                .filter { validator.validate(it).isEmpty() }
-                .flatMap { form ->
-                    val authenticationToken = UsernamePasswordAuthenticationToken(form.username, form.password)
-                    authenticationManager.authenticate(authenticationToken)
-                            .flatMap { response(it.principal as SecurityUser) }
-                            .switchIfEmpty(ok().jsonBody(Response.fail()))
-                            .onErrorResume { ok().jsonBody(Response.fail())}
-                }
-                .switchIfEmpty(ok().jsonBody(Response.fail()))
-                .awaitFirst()
+            .filter { validator.validate(it).isEmpty() }
+            .flatMap { form ->
+                val authenticationToken = UsernamePasswordAuthenticationToken(form.username, form.password)
+                authenticationManager.authenticate(authenticationToken)
+                    .flatMap { response(it.principal as SecurityUser) }
+                    .switchIfEmpty(ok().jsonBody(Response.fail()))
+                    .onErrorResume { ok().jsonBody(Response.fail()) }
+            }
+            .switchIfEmpty(ok().jsonBody(Response.fail()))
+            .awaitFirst()
     }
 
     private fun response(user: SecurityUser): Mono<ServerResponse> {
@@ -42,13 +44,15 @@ class AuthHandler(private val validator: Validator,
         claims[JWT_SUBJECT] = user.username
 
         val authTokenCookie = ResponseCookie
-                .from(AUTH_TOKEN_COOKIE, Jwt.Signer.sign(jwtProperties.secret, claims, jwtProperties.expireDays))
-                .maxAge(Duration.ofDays(jwtProperties.expireDays))
-                .path("/")
-                .build()
+            .from(AUTH_TOKEN_COOKIE, Jwt.Signer.sign(jwtProperties.secret, claims, jwtProperties.expireDays))
+            .maxAge(Duration.ofDays(jwtProperties.expireDays))
+            .path("/")
+            .sameSite("None")
+            .secure(true)
+            .build()
         return ok().contentType(MediaType.APPLICATION_JSON)
-                .cookie(authTokenCookie)
-                .bodyValue(Response.success())
+            .cookie(authTokenCookie)
+            .bodyValue(Response.success())
     }
 
 }
