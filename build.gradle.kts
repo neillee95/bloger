@@ -9,10 +9,11 @@ plugins {
 }
 
 group = "me.lee"
-version = "0.0.1-SNAPSHOT"
+version = "0.2.0"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
