@@ -24,7 +24,7 @@ class ArticleService(private val articleRepository: ArticleRepository,
             lastModifiedTime = now
         }
         return articleRepository.save(article)
-                .then(Mono.just(Response.success()))
+                .then(Mono.just(Response.success(article)))
                 .awaitSingle()
     }
 
@@ -36,7 +36,7 @@ class ArticleService(private val articleRepository: ArticleRepository,
                             lastModifiedTime = System.currentTimeMillis()
                         }
                         articleRepository.save(article)
-                                .then(Mono.just(Response.success()))
+                                .then(Mono.just(Response.success(article)))
                     }
                     .switchIfEmpty(Mono.error(ObjectNotFoundException()))
                     .awaitSingle()

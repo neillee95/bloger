@@ -7,7 +7,7 @@ import reactor.core.publisher.Mono
 
 class JwtCookiesExchangeMatcher : ServerWebExchangeMatcher {
 
-    override fun matches(exchange: ServerWebExchange): Mono<ServerWebExchangeMatcher.MatchResult>? {
+    override fun matches(exchange: ServerWebExchange): Mono<ServerWebExchangeMatcher.MatchResult> {
         return exchange.request.cookies.toMono()
                 .filter {
                     it.containsKey(AUTH_TOKEN_COOKIE)
